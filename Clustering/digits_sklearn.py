@@ -18,7 +18,7 @@ labels = digits.target
 print("n_digits: %d, \t n_samples: %d, \t n_features: %d"
       % (n_digits, n_samples, n_features))
 print(50 * '_')
-print('methods\t\tNMI\t\thomo\tcompl')
+print('methods\t\t\tNMI\t\tHomo\tCompl')
 
 
 def evaluation(estimator, name, data):
@@ -27,13 +27,12 @@ def evaluation(estimator, name, data):
         labels_pred = estimator.predict(data)
     else:
         labels_pred = estimator.labels_
-    print('%-9s\t%.3f\t%.3f\t%.3f'
+    print('%-9s\t\t%.3f\t%.3f\t%.3f'
           % (name.replace(' ', '\n') if ' ' in name else name,
              metrics.normalized_mutual_info_score(labels, labels_pred),
              metrics.homogeneity_score(labels, labels_pred),
              metrics.completeness_score(labels, labels_pred),
              ))
-
 
 
 def main():

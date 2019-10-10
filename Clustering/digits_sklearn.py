@@ -1,8 +1,9 @@
 import numpy as np
 from sklearn import metrics
-from sklearn.cluster import KMeans, AffinityPropagation, MeanShift, SpectralClustering, \
-    AgglomerativeClustering, DBSCAN
+from sklearn.cluster import KMeans, AffinityPropagation, MeanShift, estimate_bandwidth, \
+    SpectralClustering, AgglomerativeClustering, DBSCAN
 from sklearn.mixture import GaussianMixture
+from sklearn.neighbors import kneighbors_graph
 from sklearn.datasets import load_digits
 from sklearn.preprocessing import scale
 
@@ -36,12 +37,19 @@ def evaluation(estimator, name, data):
 
 
 def main():
+    # estimate bandwidth for mean shift
+    bandwidth = estimate_bandwidth(data, quantile=0.2)
+
+    # connectivity matrix for structured Ward
+    connectivity = kneighbors_graph(data, n_neighbors=2, include_self=False)
+    # make connectivity symmetric
+    connectivity = 0.5 * (connectivity + connectivity.T)
     km = KMeans(init='k-means++', n_clusters=n_digits, n_init=1)
-    af = AffinityPropagation()
-    ms = MeanShift()
-    sc = SpectralClustering(affinity='nearest_neighbors', n_clusters=n_digits)
-    ward = AgglomerativeClustering(n_clusters=n_digits, linkage='ward')
-    ac = AgglomerativeClustering(linkage="average", affinity="cityblock", n_clusters=n_digits)
+    af = AffinityPropagation(preference=-50)
+    ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
+    sc = SpectralClustering(n_clusters=n_digits, eigen_solver='arpack', affinity="nearest_neighbors")
+    ward = AgglomerativeClustering(n_clusters=n_digits, linkage='ward',connectivity=connectivity)
+    ac = AgglomerativeClustering(linkage="average", affinity="cityblock", n_clusters=n_digits, connectivity=connectivity)
     db = DBSCAN(eps=0.3)
     gmm = GaussianMixture(n_components=n_digits, covariance_type='full')
     method = [km, af, ms, sc, ward, ac, db, gmm]

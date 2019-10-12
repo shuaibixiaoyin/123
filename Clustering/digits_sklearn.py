@@ -37,7 +37,6 @@ def evaluation(estimator, name, data):
 
 
 def main():
-    # estimate bandwidth for mean shift
     bandwidth = estimate_bandwidth(data, quantile=0.2)
 
     # connectivity matrix for structured Ward

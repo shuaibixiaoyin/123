@@ -18,8 +18,8 @@ labels = digits.target
 
 print("n_digits: %d, \t n_samples: %d, \t n_features: %d"
       % (n_digits, n_samples, n_features))
-print(50 * '_')
-print('methods\t\t\tNMI\t\tHomo\tCompl')
+print(70 * '_')
+print('methods\t\t\tNMI\t\tHomo\t\tCompl')
 
 
 def evaluation(estimator, name, data):
@@ -28,7 +28,7 @@ def evaluation(estimator, name, data):
         labels_pred = estimator.predict(data)
     else:
         labels_pred = estimator.labels_
-    print('%-9s\t\t%.3f\t%.3f\t%.3f'
+    print('%-9s\t\t%.3f\t\t%.3f\t\t%.3f'
           % (name.replace(' ', '\n') if ' ' in name else name,
              metrics.normalized_mutual_info_score(labels, labels_pred),
              metrics.homogeneity_score(labels, labels_pred),
@@ -41,7 +41,7 @@ def main():
     bandwidth = estimate_bandwidth(data, quantile=0.2)
 
     # connectivity matrix for structured Ward
-    connectivity = kneighbors_graph(data, n_neighbors=2, include_self=False)
+    connectivity = kneighbors_graph(data, n_neighbors=10, include_self=False)
     # make connectivity symmetric
     connectivity = 0.5 * (connectivity + connectivity.T)
     km = KMeans(init='k-means++', n_clusters=n_digits, n_init=1)
@@ -49,16 +49,16 @@ def main():
     ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
     sc = SpectralClustering(n_clusters=n_digits, eigen_solver='arpack', affinity="nearest_neighbors")
     ward = AgglomerativeClustering(n_clusters=n_digits, linkage='ward',connectivity=connectivity)
-    ac = AgglomerativeClustering(linkage="average", affinity="cityblock", n_clusters=n_digits, connectivity=connectivity)
-    db = DBSCAN(eps=0.3)
+    ac = AgglomerativeClustering(linkage="average",  n_clusters=n_digits, connectivity=connectivity)
+    db = DBSCAN(eps=4)
     gmm = GaussianMixture(n_components=n_digits, covariance_type='full')
     method = [km, af, ms, sc, ward, ac, db, gmm]
     name = ["k-means++", "Affinity Propagation", "Mean-Shift", "Spectral Clustering",
             "Ward hierarchical clustering", "Agglomerative clustering", "DBSCAN", "Gaussian mixtures"]
     for i in range(len(method)):
-        print(50 * '_')
+        print(70 * '_')
         evaluation(method[i], name=name[i], data=data)
-    print(50 * '_')
+    print(70 * '_')
 
 
 if __name__ == '__main__':

@@ -10,7 +10,7 @@
 
 测试sklearn中以下聚类算法在以上两个数据集上的聚类效果：
 
-![聚类算法](D:\AllProject\python\ML_subject\Data_Mining\Clustering\聚类算法.png)
+详见*聚类算法.png*
 
 所使用的评价方法有：
 
@@ -87,14 +87,8 @@ def evaluation(estimator, name, data):
 
 ## 三.实验结果
 
-digits_sklearn.py：
+digits_sklearn.py：详见*digits.png*
 
-![digits](D:\AllProject\python\ML_subject\Data_Mining\Clustering\digits.png)
-
-news_sklearn.py:
-
-![news0](D:\AllProject\python\ML_subject\Data_Mining\Clustering\news0.png)
-
-![news1](D:\AllProject\python\ML_subject\Data_Mining\Clustering\news1.png)
+news_sklearn.py：详见*news0.png*；*news1.png*
 
 在news_sklearn.py中的feature在进行mean-shift等算法聚类时，默认为10000个，需要花费许多的时间和其他开销去处理，因此通过减少feature的数量到100个，但是所有聚类算法的聚类效果都因为特征值的减少明显下降了许多。

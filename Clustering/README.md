@@ -57,33 +57,33 @@ def evaluation(estimator, name, data):
 
 2.  [`AffinityPropagation`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html#sklearn.cluster.AffinityPropagation) AP聚类是通过在样本对之间发送消息直到收敛的方式来创建聚类。然后使用少量模范样本作为聚类中心来描述数据集，而这些模范样本可以被认为是最能代表数据集中其它数据的样本。在样本对之间发送的消息表示一个样本作为另一个样本的模范样本的 适合程度，适合程度值在根据通信的反馈不断更新。更新迭代直到收敛，完成聚类中心的选取，因此也给出了最终聚类。 调用形式如下：
 
-   `af = AffinityPropagation(preference=-50)`
+    `af = AffinityPropagation(preference=-50)` 
 
 3.  [`MeanShift`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift) 算法旨在于发现一个样本密度平滑的 *blobs* 。均值漂移(Mean Shift)算法是基于质心的算法，通过更新质心的候选位置，这些侯选位置通常是所选定区域内点的均值。然后，这些候选位置在后处理阶段被过滤以消除近似重复，从而形成最终质心集合。调用形式如下：
 
-   `ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)`
+    `ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)`
 
 4.  [`SpectralClustering(谱聚类)`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering) 是在样本之间进行关联矩阵的低维度嵌入，然后在低维空间中使用 KMeans 算法。谱聚类 需要指定簇的数量。这个算法适用于簇数量少时，在簇数量多时是不建议使用。 调用形式如下：
 
-   `sc = SpectralClustering(n_clusters=n_digits, eigen_solver='arpack', affinity="nearest_neighbors")`
+    `sc = SpectralClustering(n_clusters=n_digits, eigen_solver='arpack', affinity="nearest_neighbors")`
 
 5.  [`AgglomerativeClustering`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) 使用自下而上的方法进行层次聚类:开始是每一个对象是一个聚类， 并且聚类别相继合并在一起。 连接标准决定用于合并策略的度量: 
 
    - **Ward** 最小化所有聚类内的平方差总和。这是一种方差最小化(variance-minimizing )的优化方向， 这是与k-means 的目标函数相似的优化方法，但是用 凝聚分层（agglomerative hierarchical）的方法处理。调用形式：
 
-     `ward = AgglomerativeClustering(n_clusters=n_digits, linkage='ward',connectivity=connectivity)`
+      `ward = AgglomerativeClustering(n_clusters=n_digits, linkage='ward',connectivity=connectivity)`
 
    - **Average linkage** 最小化成对聚类间平均样本距离值。调用形式：
 
-     `ac = AgglomerativeClustering(linkage="average",  n_clusters=n_digits, connectivity=connectivity)`
+      `ac = AgglomerativeClustering(linkage="average",  n_clusters=n_digits, connectivity=connectivity)`
 
 6.  [`DBSCAN`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN) 算法将簇视为被低密度区域分隔的高密度区域。由于这个相当普遍的观点， DBSCAN发现的簇可以是任何形状的，与假设簇是凸的 K-means 相反。 DBSCAN 的核心概念是 *core samples*, 是指位于高密度区域的样本。因此一个簇是一组核心样本，每个核心样本彼此靠近（通过某个距离度量测量） 和一组接近核心样本的非核心样本。算法中的两个参数`min_samples` 和 `eps`正式定义了*稠密性*。较高的 `min_samples` 或者较低的 `eps` 都表示形成簇所需的较高密度。 调用形式：
 
-   `db = DBSCAN(eps=4)`
+    `db = DBSCAN(eps=4)`
 
 7.  [`GaussianMixture`](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture) 对象实现了用来拟合高斯混合模型的 [期望最大化](https://sklearn.apachecn.org/docs/0.21.3/20.html#expectation-maximization) (EM) 算法。它还可以为多变量模型绘制置信椭圆体，同时计算 BIC（Bayesian Information Criterion，贝叶斯信息准则）来评估数据中聚类的数量。调用形式：
 
-   `gmm = GaussianMixture(n_components=n_digits, covariance_type='full')`
+    `gmm = GaussianMixture(n_components=n_digits, covariance_type='full')`
 
 ## 三.实验结果
 
@@ -91,4 +91,4 @@ digits_sklearn.py：详见*digits.png*
 
 news_sklearn.py：详见*news0.png*；*news1.png*
 
-在news_sklearn.py中的feature在进行mean-shift等算法聚类时，默认为10000个，需要花费许多的时间和其他开销去处理，因此通过减少feature的数量到100个，但是所有聚类算法的聚类效果都因为特征值的减少明显下降了许多。
+*注：在news_sklearn.py中进行算法聚类时，进行聚类数据的feature默认为100个。*
